@@ -163,6 +163,7 @@ def _get_deviation(sphere_radius, k, beam_direction=[0,0,-1]):
     deviation = sphere_radius-dist # distance from edge of sphere to k
     return deviation
 
+
 def _get_disorder(k, displacement):
     """The estimates the amount of disorder in the perfect crystal.
     This might need some additional work.
