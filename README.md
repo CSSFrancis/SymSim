@@ -1,3 +1,5 @@
+**SymSim**
+
 This package is a rudimentary simulation tool based on kinematic scattering of clusters.  While not completely correct this package
 gives basic planar diffraction patterns with some symmetry and allows for rotation (2 and 3-D rotations) as well as allowing for
 disorder (Debye-Waller factor). 
