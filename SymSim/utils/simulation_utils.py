@@ -40,7 +40,7 @@ def _shape_function(radius, deviation, function=None):
     Parameters
     ----------------
     r: float
-        The radius of the cluster
+        The radius of the sim
     s_g: float
         The deviation parameter for the point.
     function: None
@@ -64,7 +64,7 @@ def s_g_kernel(kernel_size, d_hkl, cluster_size, voltage):
     d_hkl: float
         The interplanar spacing in n,
     cluster_size: float
-        The size of the cluster being calculated.
+        The size of the sim being calculated.
     """
     wavelength = _get_wavelength(acc_voltage=voltage)
     ax = np.arange(-kernel_size // 2 + 1., kernel_size // 2 + 1.)
@@ -93,7 +93,7 @@ def s_g_kernel_angle(kernel_size, d_hkl, cluster_size, voltage):
     d_hkl: float
         The interplanar spacing in n,
     cluster_size: float
-        The size of the cluster being calculated.
+        The size of the sim being calculated.
     """
     wavelength = _get_wavelength(acc_voltage=voltage)
     ax = np.arange(-kernel_size // 2 + 1., kernel_size // 2 + 1.)
