@@ -10,3 +10,8 @@ assuming that all of the diffraction spots hav an intensity = 1 if they are on h
 the ideal diffraction case.
 
 Let me know if there are any issues and I will work to fix the mistakes. 
+
+In order to start you should first look at the example Jupyter Notebook. That gives the best first look at what the project can do.  Past that
+you should download the package using pip.
+
+``` pip install SymSim``` 
