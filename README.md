@@ -11,7 +11,7 @@ the ideal diffraction case.
 
 Let me know if there are any issues and I will work to fix the mistakes. 
 
-In order to start you should first look at the example Jupyter Notebook. That gives the best first look at what the project can do.  Past that
+In order to start you should first look at the example [Jupyter Notebook](https://github.com/CSSFrancis/SymSim/blob/master/SymSim/notebooks/SymSimExample.ipynb). That gives the best first look at what the project can do.  Past that
 you should download the package using pip.
 
 ``` pip install SymSim``` 
