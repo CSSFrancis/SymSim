@@ -8,6 +8,8 @@ from skimage.filters import gaussian
 from numpy.random import random, choice
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
+from mpl_toolkits.mplot3d import Axes3D
+
 
 
 class Cluster(object):
@@ -47,7 +49,11 @@ class Cluster(object):
         self.beam_direction = [0,0,1]
         self.displacement=displacement
 
-    def get_diffraction(self, img_size=8.0,
+    def __str__(self):
+        return ("<Cluster | Symmetry: " + str(self.symmetry) +
+                "| pos:" + str(self.position) + ">")
+
+    def get_diffraction(self, img_size=10.0,
                         num_pixels=512,
                         accelerating_voltage=200,
                         conv_angle=0.6):
@@ -155,4 +161,34 @@ class Cluster(object):
     def get_angle_between(self):
         return np.arccos((np.trace(self.rotation_3d)-1)/2)
 
+    def plot_3d(self, ax):
+        # in inverse angstroms.
+        diffraction_size = (0.7/self.radius)# just a little analytical solution
+        k = np.array(self.get_k_vectors())
+        ax.scatter(k[:,0], k[:,1], k[:,2], marker="o", s=100)
+
+    def plot_2d(self, ewald_sphere=None):
+        """This function plots all of the diffraction spot pairs. As well
+         as the 2-D projection. If a plot of an Ewald sphere is passed in this
+         allows the user to see where the diffraction comes from
+        """
+        radius = 0.7/self.radius
+        k = np.array(self.get_k_vectors())
+        sym = int(len(k)/2)
+        pairs = []
+        rows = int(np.ceil(sym/3))
+        for i in range(sym):
+            sym_1 = k[i]
+            sym_2 = k[i + sym]
+            sym_1 = [ (sym_1[0]**2+sym_1[1]**2)**0.5,sym_1[2]]
+            sym_2 = [-(sym_2[0] ** 2 + sym_2[1] ** 2) ** 0.5, sym_2[2]]
+            pairs.append(np.array([sym_1,sym_2]))
+        fig, axs = plt.subplots(nrows=rows, ncols=3)
+        for i, p in enumerate(pairs):
+            r = i//3
+            c = np.remainder(i,3)
+            print(p)
+            axs[r,c].scatter(p[:,0], p[:,1])
+            if ewald_sphere is not None:
+                ewald_sphere.plot_2d(ax=axs[r,c])
 

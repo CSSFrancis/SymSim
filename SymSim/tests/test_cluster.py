@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from SymSim.sim.cluster import Cluster
 from SymSim.sim.simulation_cube import SimulationCube
 from SymSim.utils.rotation_utils import _rand_2d_rotation_matrix
+from SymSim.sim.EwaldSphere import EwaldSphere
 
 
 class TestCluster(TestCase):
@@ -12,7 +13,6 @@ class TestCluster(TestCase):
         self.c = Cluster(symmetry=10, radius=.5, k=4.0, position=(1, 1))
 
     def test_get_k_vectors(self):
-
         self.c.rotation_2d = _rand_2d_rotation_matrix()
         print(self.c.rotation_2d)
         k = np.array(self.c.get_k_vectors())
@@ -37,6 +37,21 @@ class TestCluster(TestCase):
         diff = self.c.get_diffraction(img_size=15.0)
         plt.imshow(diff)
         plt.show()
+
+    def test_plot_3d(self):
+        fig = plt.figure()
+        ax = plt.axes(projection='3d')
+        self.c.plot_3d(ax=ax)
+        plt.show()
+
+    def test_plot_2d(self):
+        self.c.plot_2d()
+
+    def test_plot_2d_sphere(self):
+        thick_sphere = EwaldSphere(acc_voltage=200, convergence_angle=0.6)
+        self.c.plot_2d(ewald_sphere=thick_sphere)
+        plt.show()
+
 
 class TestSimulationCube(TestCase):
     def test_random_init(self):
@@ -77,3 +92,7 @@ class TestSimulationCube(TestCase):
         stem = cube.get_4d_stem(noise=True, disorder=.05, convolve=True)
         stem.plot()
         plt.show()
+
+
+
+

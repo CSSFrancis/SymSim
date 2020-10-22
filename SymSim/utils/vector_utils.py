@@ -101,3 +101,35 @@ def _get_angle_between(v1, v2):
     unit_vector2 = v2 / np.linalg.norm(vector2)
     dot_product = np.dot(unit_vector1, unit_vector2)
     return np.arccos(dot_product)  # angle in radian
+
+def _get_distance_from_sphere(x,y,radius):
+    print(np.shape(x))
+    return radius - np.sqrt(radius**2-x**2-y**2)
+
+def _get_distance_from_sphere_delta(x,y,radius, deltaxy, deltaz):
+    magnitudes = (x**2+y**2)**0.5
+    x_displacement = (x*deltaxy)
+    y_displacement = (y*deltaxy)
+    new_x = x+x_displacement
+    new_y = y+y_displacement
+    return (radius - np.sqrt(radius**2-new_x**2-new_y**2))
+
+def _get_deflection_from_convergence(convergence_angle, radius):
+    """Get some max deflection in x,y, and z for some convergence angle
+    and Ewald Sphere radius
+
+    Parameters
+    ------------
+    convergence_angle: float
+        The Convergence angle in mRad
+    radius:
+        The radius of the Ewald Sphere (1/wavelength)
+
+    Returns
+    --------
+    magnitude_x,y
+    """
+    magnitude_deflection = np.sin(convergence_angle/2000)*radius
+    delta_z = np.sin(convergence_angle/2000)*magnitude_deflection
+    magnitude_xy = np.cos(convergence_angle/2000)*magnitude_deflection
+    return magnitude_xy,magnitude_xy, delta_z

@@ -51,12 +51,12 @@ class SimulationCube(list):
         symmetry: list
             The list of symmetries to choose from.  Acceptable symmetries are 2,4,6 and 10
         """
-        self = self + get_random_cluster(num_clusters,
+        self.extend(get_random_cluster(num_clusters,
                                        self.dimensions,
                                        radius_range,
                                        k_range,
                                        random_rotation,
-                                       symmetry)
+                                       symmetry))
         return
 
     def add_icosahedron(self,
@@ -78,11 +78,11 @@ class SimulationCube(list):
         symmetry: list
             The list of symmetries to choose from.  Acceptable symmetries are 2,4,6 and 10
         """
-        self = self + get_random_icosahedron(num_clusters,
+        self.extend(get_random_icosahedron(num_clusters,
                                              self.dimensions,
                                              radius_range,
                                              k_range,
-                                             random_rotation)
+                                             random_rotation))
         return
 
     def show_projection(self,

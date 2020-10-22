@@ -25,8 +25,9 @@ def get_random_cluster(num_clusters,
     else:
         rot_2d = [np.eye(3), ] * num_clusters
         rot_3d = [np.eye(3), ] * num_clusters
+    cluster_list = []
     for s, r, k, p, two, three in zip(rand_sym, rand_r, rand_k, rand_pos, rot_2d, rot_3d):
-        cluster_list = [Cluster(s, r, k, p, two, three)]
+        cluster_list.append(Cluster(s, r, k, p, two, three))
     return cluster_list
 
 

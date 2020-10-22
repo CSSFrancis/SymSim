@@ -8,7 +8,7 @@ from SymSim.utils.simulation_utils import _get_disorder, _get_speckle_intensity
 class TestSimulationUtils(TestCase):
 
     def test_get_wavelength(self):
-        self.assertAlmostEqual(_get_wavelength(200), 0.002508,4)
+        self.assertAlmostEqual(_get_wavelength(200), 0.002508,  4)
         self.assertAlmostEqual(_get_wavelength(300), 0.0019687, 4)
 
     def test_get_speckle_size(self):
@@ -38,6 +38,18 @@ class TestSimulationUtils(TestCase):
         plt.xlabel("Angle of Mistilt Degrees")
         plt.show()
 
+    def test_shape_function_dev(self):
+        a1,i1 = self.shape_function_vs_deviation(1.0)
+        a2, i2 = self.shape_function_vs_deviation(2.0)
+        a4, i4 = self.shape_function_vs_deviation(4.0)
+        plt.plot(a1,i1, label="1 nm sim")
+        plt.plot(a2, i2, label="2 nm sim")
+        plt.plot(a4, i4, label="4 nm sim")
+        plt.legend()
+        plt.xlabel("Deviation Parameter")
+        plt.show()
+
+
     def shape_function_vs_angle(self, size=1.0):
         angles = np.linspace(start=-np.pi / 8, stop=np.pi / 8, num=100)
         rad = 1 / _get_wavelength(200)
@@ -53,3 +65,10 @@ class TestSimulationUtils(TestCase):
 
             inten.append(_shape_function(radius=size, deviation=disp))
         return angles,inten
+
+    def shape_function_vs_deviation(self, size=1.0):
+        deviation = np.linspace(start=-1, stop=1, num=100)
+        inten = []
+        for d in deviation:
+            inten.append(_shape_function(radius=size, deviation=d))
+        return deviation,inten
