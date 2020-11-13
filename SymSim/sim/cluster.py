@@ -167,12 +167,13 @@ class Cluster(object):
         k = np.array(self.get_k_vectors())
         ax.scatter(k[:,0], k[:,1], k[:,2], marker="o", s=100)
 
-    def plot_2d(self, ewald_sphere=None):
+
+    def plot_2d(self, ewald_sphere=None, accelerating_voltage=200, conv_angle=0.6, figsize=None):
         """This function plots all of the diffraction spot pairs. As well
          as the 2-D projection. If a plot of an Ewald sphere is passed in this
          allows the user to see where the diffraction comes from
         """
-        radius = 0.7/self.radius
+        radius = 0.5/self.radius
         k = np.array(self.get_k_vectors())
         sym = int(len(k)/2)
         pairs = []
@@ -183,12 +184,17 @@ class Cluster(object):
             sym_1 = [ (sym_1[0]**2+sym_1[1]**2)**0.5,sym_1[2]]
             sym_2 = [-(sym_2[0] ** 2 + sym_2[1] ** 2) ** 0.5, sym_2[2]]
             pairs.append(np.array([sym_1,sym_2]))
-        fig, axs = plt.subplots(nrows=rows, ncols=3)
+        fig, axs = plt.subplots(nrows=rows, ncols=3, figsize=figsize)
         for i, p in enumerate(pairs):
             r = i//3
             c = np.remainder(i,3)
             print(p)
-            axs[r,c].scatter(p[:,0], p[:,1])
+            axs[r,c].set_xlim([-7,7])
+            for pos in p:
+                cir = Circle((pos[0], pos[1]), radius, color='r')
+                axs[r, c].add_artist(cir)
+            #scatter(p[:,0], p[:,1])
             if ewald_sphere is not None:
                 ewald_sphere.plot_2d(ax=axs[r,c])
+        axs[-1,-1].imshow(self.get_diffraction())
 

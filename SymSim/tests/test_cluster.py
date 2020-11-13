@@ -53,6 +53,7 @@ class TestCluster(TestCase):
         plt.show()
 
 
+
 class TestSimulationCube(TestCase):
     def test_random_init(self):
         cube = SimulationCube()
