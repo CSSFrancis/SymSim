@@ -126,8 +126,8 @@ class SimulationCube(list):
             The size of the image made
         """
         fig, ax = plt.subplots()
-        ax.set_xlim(0,self.dimensions[0])
-        ax.set_ylim(0,self.dimensions[1])
+        ax.set_xlim(0, self.dimensions[0])
+        ax.set_ylim(self.dimensions[1],0)
         colors = ["black","blue","red","green","yellow","red","orange", "purple"]
         for cluster in self:
             if acceptance is not None:
