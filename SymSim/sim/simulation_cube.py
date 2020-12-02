@@ -57,6 +57,8 @@ class SimulationCube(list):
                                        k_range,
                                        random_rotation,
                                        symmetry))
+
+
         return
 
     def add_icosahedron(self,

@@ -20,7 +20,7 @@ class Cluster(object):
                  position=random(2),
                  rotation_2d=np.eye(3),
                  rotation_3d=np.eye(3),
-                 plane_direction=[0,0,1],
+                 plane_direction=[0, 0, 1],
                  displacement=None):
         """Defines a sim with a symmetry of symmetry, a radius of radius in nm and position of position.
 
@@ -134,7 +134,7 @@ class Cluster(object):
                               for k in k_rotated]
         radius = _get_speckle_size(accelerating_voltage, conv_angle)*scale
         speckles = [circle(int(k1[0] * scale + num_pixels/2), int(k1[1] * scale + num_pixels/2),
-                           radius=radius, shape=(num_pixels,num_pixels)) for k1 in k_rotated]
+                           radius=radius, shape=(num_pixels, num_pixels)) for k1 in k_rotated]
         return speckles, observed_intensity
 
     def get_intensity(self,
