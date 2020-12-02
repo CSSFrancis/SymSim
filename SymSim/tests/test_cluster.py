@@ -19,6 +19,13 @@ class TestCluster(TestCase):
         plt.scatter(k[:,0], k[:,1])
         plt.show()
 
+    def test_Euler_angles(self):
+        self.c = Cluster(symmetry=10, radius=.5, k=4.0,
+                         position=(1, 1),
+                         rot_alpha=.3,
+                         rot_beta=0,
+                         rot_gamma=0)
+
     def test_get_k_vectors_rot(self):
         #self.c.rotation_3d = np.eye(3)
         self.c.plane_direction=[1,1,1]

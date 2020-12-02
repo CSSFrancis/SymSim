@@ -18,8 +18,11 @@ class Cluster(object):
                  radius=1,
                  k=4.0,
                  position=random(2),
-                 rotation_2d=np.eye(3),
-                 rotation_3d=np.eye(3),
+                 rot_alpha=0,
+                 rot_beta=0,
+                 rot_gamma=0,
+                 rotation_2d=None,
+                 rotation_3d=None,
                  plane_direction=[0, 0, 1],
                  displacement=None):
         """Defines a sim with a symmetry of symmetry, a radius of radius in nm and position of position.
@@ -32,6 +35,8 @@ class Cluster(object):
             The radius of the sim in nm
         position: tuple
             The position of the sim in the simulation cube
+        rot_x, rot_y, rot_z: float
+            The rotation around that axis for the
         rotation_vector: tuple
             The vector which the sim is rotated around
         rotation_angle: float
@@ -42,8 +47,25 @@ class Cluster(object):
         self.symmetry = symmetry
         self.radius = radius
         self.position = position
-        self.rotation_2d = rotation_2d
-        self.rotation_3d = rotation_3d
+        if rotation_3d is None and rotation_2d is None:
+            self.rot_alpha = rot_alpha
+            self.rot_beta = rot_beta
+            self.rot_gamma = rot_gamma
+            rot_beta_mat = np.array([[1, 0, 0],
+                            [0, np.cos(rot_beta), np.sin(rot_beta)],
+                            [0, -np.sin(rot_beta), np.cos(rot_beta)]])
+            rot_alpha_mat = np.array([[np.cos(rot_alpha), np.sin(rot_alpha), 0],
+                             [-np.sin(rot_alpha), np.cos(rot_alpha), 0],
+                             [0, 0, 1]])
+            #print(rot_alpha_mat)
+            rot_gamma_mat = np.array([[np.cos(rot_gamma), np.sin(rot_gamma), 0],
+                                      [-np.sin(rot_gamma), np.cos(rot_gamma), 0],
+                                      [0, 0, 1]])
+            self.rotation_3d = np.matmul(np.matmul(rot_gamma_mat, rot_beta_mat),rot_alpha_mat)
+            print("Rot:", self.rotation_3d)
+        else:
+            self.rotation_2d = rotation_2d
+            self.rotation_3d = rotation_3d
         self.k = k
         self.plane_direction = plane_direction
         self.beam_direction = [0,0,1]
