@@ -130,7 +130,7 @@ class SimulationCube(list):
         fig, ax = plt.subplots()
         ax.set_xlim(0, self.dimensions[0])
         ax.set_ylim(self.dimensions[1],0)
-        colors = ["black","blue","red","green","yellow","red","orange", "purple"]
+        colors = ["black", "blue", "red", "green", "yellow", "red", "orange", "purple"]
         for cluster in self:
             if acceptance is not None:
                 if abs(cluster.get_angle_between()) > acceptance:
@@ -146,7 +146,7 @@ class SimulationCube(list):
         leg = [Line2D([0], [0], marker='o', color=colors[i], label=str(sym)+" fold symmetry",
                markerfacecolor=colors[i], markersize=15) for i,sym in enumerate(symmetries)]
 
-        ax.legend(handles=leg)
+        ax.legend(handles=leg, loc="upper_right")
         return
 
     def get_4d_stem(self,
@@ -154,7 +154,8 @@ class SimulationCube(list):
                     accelerating_voltage=200,
                     k_rad = 5.0,
                     simulation_size=(50, 50, 128, 128),
-                    noise = False,
+                    possion_noise=False,
+                    readout_noise=None,
                     num_electrons=1000,
                     convolve=False,
                     beam_size=None):
@@ -193,9 +194,10 @@ class SimulationCube(list):
             for (sr,sc), inten in zip(speckles, observed_intensity):
                 inner_r, outer_r = np.meshgrid(sr, rr)
                 inner_c, outer_c = np.meshgrid(sc, rc)
-                if noise:
+                if possion_noise:
                     #print(np.size(inner_c))
-                    inten = np.random.poisson(inten*num_electrons,size=np.size(inner_c))
+                    inten = np.random.poisson(inten*num_electrons, size=np.size(inner_c))
+
                 else:
                     inten= inten* num_electrons
                 dataset[(outer_c.flatten(),
@@ -205,6 +207,8 @@ class SimulationCube(list):
                                                                 outer_r.flatten(),
                                                                 inner_c.flatten(),
                                                                 inner_r.flatten())]
+        if readout_noise is not None:
+            dataset = dataset+readout_noise*np.random.random(size=np.size(dataset))
         dataset = Signal2D(dataset)
         if convolve:
             if beam_size is None:
@@ -221,6 +225,8 @@ class SimulationCube(list):
         dataset.axes_manager.navigation_axes[1].scale = self.dimensions[1] / simulation_size[1]
         dataset.axes_manager.navigation_axes[0].units = "nm"
         dataset.axes_manager.navigation_axes[1].units = "nm"
+        dataset.axes_manager.navigation_axes[0].name = "x"
+        dataset.axes_manager.navigation_axes[1].name = "y"
         dataset.axes_manager.signal_axes[0].scale = k_rad*2 /simulation_size[2]
         dataset.axes_manager.signal_axes[1].scale = k_rad*2 / simulation_size[3]
         dataset.axes_manager.signal_axes[0].units = "$nm^-1$"
