@@ -4,7 +4,7 @@ import numpy as np
 
 def _get_speckle_intensity(k_vector,
                            ewald_sphere_rad,
-                           cluster_rad = 1.0,
+                           cluster_rad=1.0,
                            disorder=None,
                            beam_direction=[0,0,1]):
     """Returns the intensity of some speckle out of one
